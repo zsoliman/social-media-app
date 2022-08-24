@@ -14,4 +14,9 @@ class UsersController < ApplicationController   # defining the controller class
             render json: {error: 'Invalid email or password'}, status: 404
         end
     end 
+
+    def forgot_password
+        user = User.find_by!(email: params[:email])
+        render json: {password: user.password_digest}, status: :ok
+    end
 end
