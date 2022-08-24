@@ -31,7 +31,10 @@ function App() {
       method: 'POST',
       body: data
     })
+
+    let res = await req.json()
     if (req.ok) {
+      console.log('User', res)
       alert('you have logged in')
     } else {
       alert('Invalid email or password')
@@ -57,8 +60,8 @@ function App() {
       <hr />
       <h2>Log In</h2>
       <form onSubmit={handleSubmit} ref={form}>
-        <input name='email' type='email' placeholder='email' /><br />
-        <input name='password' type='password' placeholder='password' /><br />
+        <input name='email' type='email' placeholder='email...' /><br />
+        <input name='password' type='password' placeholder='password...' /><br />
         <input type='submit' />
       </form>
     </div>
