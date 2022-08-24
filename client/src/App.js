@@ -1,5 +1,8 @@
 import './App.css';
 import { useState, useEffect, useRef } from 'react'
+import store from './store';
+import { connect } from 'react-redux'
+import Navbar from './Navbar'
 
 function App() {
   const [posts, setPosts] = useState([])
@@ -35,11 +38,13 @@ function App() {
     let res = await req.json()
     if (req.ok) {
       console.log('User', res)
-      alert('you have logged in')
+      store.dispatch({ type: 'user/login', user: res })
     } else {
       alert('Invalid email or password')
     }
   }
+
+
 
   const [email, setEmail] = useState('')
 
@@ -61,8 +66,17 @@ function App() {
     }
   }
 
+  const addValue = () => {
+    store.dispatch({ type: 'counter/incremented' })
+  }
+
+  const removeValue = () => {
+    store.dispatch({ type: 'counter/decremented' })
+  }
+
   return (
     <div className="App">
+      <Navbar />
       <h2>News Feed</h2>
       {
         posts.map((post) => {
@@ -94,8 +108,18 @@ function App() {
         <input type='submit' />
       </form>
 
+      <hr />
+      <h4>Global Count Is: {store.getState().value}</h4>
+      <button onClick={addValue}>ADD VALUE</button>
+      <button onClick={removeValue}>REMOVE VALUE</button>
+
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  // tells the component which values in redux to subscribe to
+  return { value: state.value }
+}
+export default connect(mapStateToProps)(App)
+// export default App;
